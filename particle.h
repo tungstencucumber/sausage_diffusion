@@ -5,19 +5,23 @@
 
 class Particle
 {
-private:
+protected:
   double mass; // daltons
+  double radius; // angstrom
   Vector2D loc; // m
   Vector2D v; //10^2 m/s
 public:
   Particle();
   Particle(double m, double* _x, double* _v);
   ~Particle();
-  double getM();
-  double* getX();
-  double* getV();
+  double getM() const;
+  Vector2D getLoc() const;
+  Vector2D getV() const;
+  void setLoc(const Vector2D &_loc);
+  void setV(const Vector2D &_V);
 
-  void collision(Particle p2);
+  double sqrho(Particle &p2) const; // return distance between two particles SQUARED (for the sake of runtime economy)
+  void collision(Particle &p2);
 };
 
 #endif
