@@ -13,6 +13,8 @@ public:
 
     double getY() const;
 
+    double getLen() const;
+
     void setX(double _x);
 
     void setY(double _y);
