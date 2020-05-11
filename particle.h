@@ -1,17 +1,19 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+#include "Vector2D.h"
+
 class Particle
 {
 private:
-  unsigned double mass; // daltons
-  double* x; // m
-  double* v; //10^2 m/s
+  double mass; // daltons
+  Vector2D loc; // m
+  Vector2D v; //10^2 m/s
 public:
   Particle();
-  Particle(unsigned double m, double* _x, double* _v);
+  Particle(double m, double* _x, double* _v);
   ~Particle();
-  unsigned double getM();
+  double getM();
   double* getX();
   double* getV();
 
