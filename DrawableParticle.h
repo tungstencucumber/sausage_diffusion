@@ -2,7 +2,7 @@
 #define DIFFUSION_GRAPHICS_ENGINE_DRAWABLEPARTICLE_H
 
 #include "Circle.h"
-#include "particle.h"
+#include "Particle.h"
 
 class DrawableParticle: public Circle, public Particle {
 public:
