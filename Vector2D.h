@@ -2,6 +2,7 @@
 #define LINAL_VECTOR2D_H
 
 #include <iostream>
+#include <cmath>
 
 class Vector2D {
 public:
