@@ -1,7 +1,7 @@
 #include "DrawableParticle.h"
 
-DrawableParticle::DrawableParticle(double m, double r, double *_x, double *_v) : Particle(m, r, _x, _v),
-                                                                                 Circle(Vector2D(_x[0], _x[1]), r) {}
+DrawableParticle::DrawableParticle(double m, double r, Vector2D &_x, Vector2D &_v) : Particle(m, r, _x, _v),
+                                                                                 Circle(Vector2D(_x), r) {}
 
 
 void DrawableParticle::update(double dt, sf::RenderWindow &w) {
