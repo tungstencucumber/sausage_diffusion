@@ -12,7 +12,7 @@ protected:
   Vector2D v; //10^2 m/s
 public:
   Particle();
-  Particle(double m, double* _x, double* _v);
+  Particle(double m, double r, double* _x, double* _v);
   ~Particle();
   double getM() const;
   double getR() const;
