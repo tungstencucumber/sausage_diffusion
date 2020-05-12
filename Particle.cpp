@@ -2,7 +2,7 @@
 
 Particle::Particle() {}
 
-Particle::Particle(double m, double r, double* _x, double* _v) :mass(m), radius(r), loc(_x[0], _x[1]), v(_v[0], _v[1]) {}
+Particle::Particle(double m, double r, Vector2D &_x, Vector2D &_v) :mass(m), radius(r), loc(_x), v(_v) {}
 
 Particle::~Particle() {}
 
