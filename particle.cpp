@@ -39,12 +39,16 @@ double Particle::sqrho(Particle &p2) const {
 }
 
 void Particle::collision(Particle &p2) {
-  Vector2D Vc = (mass/(mass + p2.getM()))*v + (p2.getM()/(mass + p2.getM()))*p2.getV();
-  double k = ( (p2.getV() - Vc).getX() )/( (v - Vc).getX() );
-  double k1 = ( 2*k*p2.getM() + mass - p2.getM() )/( mass + p2.getM() );
-  double k2 = ( 2*mass + (p2.getM() - mass)*k )/( mass + p2.getM() );
-  v = k1*v + (1 - k1)*Vc;
-  p2.setV(k2*v + (1 - k2)*Vc);
+  Vector2D dist = p2.getLoc() - loc;
+  Vector2D v1 = (v*dist)/(dist.getX()*dist.getX() + dist.getY()*dist.getY()) * dist;
+  Vector2D v2 = (p2.getV()*dist)/(dist.getX()*dist.getX() + dist.getY()*dist.getY()) * dist;
+  v = v - v1;
+  p2.setV(p2.getV() - v2);
+  double k = v2.getX()/v1.getX();
+  double k1 = (2*k*p2.getM() + mass - p2.getM())/(mass + p2.getM() );
+  double k2 = (2*mass + (p2.getM() - mass)*k)/(mass + p2.getM());
+  v = v + k1*v1;
+  p2.setV(p2.getV() + k2*v1);
 }
 
 void Particle::move(double dt) {
