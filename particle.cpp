@@ -14,6 +14,10 @@ double Particle::getR() const {
     return radius;
 }
 
+double Particle::getE() const {
+  return mass*(v.getX()*v.getX() + v.getY()*v.getY())/2;
+}
+
 Vector2D Particle::getLoc() const {
   return loc;
 }
@@ -30,10 +34,6 @@ void Particle::setV(const Vector2D &_v) {
   v = _v;
 }
 
-void Particle::move() {
-    loc = loc + v;
-}
-
 double Particle::sqrho(Particle &p2) const {
   return (loc.getX() - p2.getLoc().getX())*(loc.getX() - p2.getLoc().getX()) + (loc.getY() - p2.getLoc().getY())*(loc.getY() - p2.getLoc().getY());
 }
@@ -45,4 +45,8 @@ void Particle::collision(Particle &p2) {
   double k2 = ( 2*mass + (p2.getM() - mass)*k )/( mass + p2.getM() );
   v = k1*v + (1 - k1)*Vc;
   p2.setV(k2*v + (1 - k2)*Vc);
+}
+
+void Particle::move(double dt) {
+    loc = loc + v*dt;
 }

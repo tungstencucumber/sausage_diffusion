@@ -18,3 +18,5 @@ int main() {
             if (it1->sqrho(*it2) < (it1->getR() + it2->getR())*(it1->getR() + it2->getR()))
                 it1->collision(*it2);
     it1->move();
+    }
+    */
