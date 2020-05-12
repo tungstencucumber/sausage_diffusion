@@ -6,7 +6,7 @@
 
 class DrawableParticle: public Circle, public Particle {
 public:
-    DrawableParticle(double m, double r, double* _x, double* _v);
+    DrawableParticle(double m, double r, Vector2D &_x, Vector2D &_v);
 
     void update(double dt, sf::RenderWindow &w);
 
