@@ -10,6 +10,10 @@ double Particle::getM() const {
   return mass;
 }
 
+double Particle::getR() const {
+    return radius;
+}
+
 Vector2D Particle::getLoc() const {
   return loc;
 }
@@ -24,6 +28,10 @@ void Particle::setLoc(const Vector2D &_loc) {
 
 void Particle::setV(const Vector2D &_v) {
   v = _v;
+}
+
+void Particle::move() {
+    loc = loc + v;
 }
 
 double Particle::sqrho(Particle &p2) const {
