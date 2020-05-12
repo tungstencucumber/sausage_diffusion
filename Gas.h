@@ -7,14 +7,18 @@
 class Gas
 {
 protected:
-  vector<Particle> molecules;
+  vector<DrawableParticle> molecules;
   double pressure;
   double volume;
   double temperature;
   double moles;
 public:
   Gas();
+  Gas(vector<DrawableParticle> m);
   ~Gas();
+
+  void live(double dt);
+
 }
 
 #endif
