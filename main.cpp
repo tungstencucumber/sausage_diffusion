@@ -1,12 +1,39 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <SFML/graphics.hpp>
+#include "DrawableParticle.h"
 
 using namespace std;
 
 int main() {
-  cout << "Vse khorosho." << endl;
-  return 0;
+    double loc1[] = {50, 400};
+    double loc2[] = {750, 450};
+    double v1[] = {20, 0};
+    double v2[] = {-10, 0};
+    double dt = 0.01;
+    DrawableParticle part1(1, 50, loc1, v1);
+    DrawableParticle part2(1, 50, loc2, v2);
+    part1.fill(255, 0, 0);
+    part2.fill(0, 0, 255);
+
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Example");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        if (part1.sqrho(part2) < (part1.getR() + part2.getR()) * (part1.getR() + part2.getR())) {
+            part1.collision(part2);
+            //window.close();
+        }
+        window.clear();
+        part1.update(dt, window);
+        part2.update(dt, window);
+        window.display();
+    }
+    return 0;
 }
 
 
@@ -19,4 +46,4 @@ int main() {
                 it1->collision(*it2);
     it1->move();
     }
-    */
+*/
