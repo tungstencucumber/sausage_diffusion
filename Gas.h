@@ -2,7 +2,9 @@
 #define GAS_H
 
 #include <vector>
-#include "Particle.h"
+#include "DrawableParticle.h"
+
+using namespace std;
 
 class Gas
 {
@@ -11,14 +13,22 @@ protected:
   double pressure;
   double volume;
   double temperature;
-  double moles;
+  double nu;
+  double energy;
 public:
   Gas();
   Gas(vector<DrawableParticle> m);
   ~Gas();
 
-  void live(double dt);
+  double getP() const;
+  double getV() const;
+  double getT() const;
+  double getU() const;
+  double getNu() const;
 
-}
+  void updateU();
+  void updateT();
+  void live(double dt);
+};
 
 #endif
