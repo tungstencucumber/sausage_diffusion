@@ -11,7 +11,7 @@ double Vector2D::getY() const {
 }
 
 double Vector2D::getLen() const {
-    return sqrt(x*x - y*y);
+    return sqrt(x * x + y * y);
 }
 
 void Vector2D::setX(double _x) {
@@ -29,7 +29,7 @@ void Vector2D::rotate(double angle) {
     setY(-_x * sin(angle) + _y * cos(angle));
 }
 
-Vector2D & Vector2D::operator=(const Vector2D &v) {
+Vector2D &Vector2D::operator=(const Vector2D &v) {
     x = v.getX();
     y = v.getY();
     return (*this);

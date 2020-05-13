@@ -50,8 +50,8 @@ void Particle::collision(Particle &p2) {
   v = v + k1*v1;
   p2.setV(p2.getV() + k2*v1);
 
-  //double l = sqrt(dist.getX()*dist.getX() + dist.getY()*dist.getY());
-  loc = loc - 0.5*dist;
+  double l = dist.getLen();
+  loc = loc - ((radius + p2.getR())/l - 1)*dist;
 }
 
 void Particle::move(double dt) {
