@@ -2,7 +2,6 @@
 #include <cmath>
 #include <vector>
 #include <set>
-#include <algorithm>
 #include <SFML/graphics.hpp>
 #include "DrawableParticle.h"
 #include <random>
@@ -15,12 +14,13 @@ int rand_uns(int min, int max) {
     return d(e);
 }
 
+
 using namespace std;
 
 int main() {
-    double r[] = {3, 5}, m[] = {10, 20}, dt = 0.1;
-    double rmax = 9 * r[1] * r[1];
-    unsigned int n = 5000;
+    double r[] = {5, 5, 5}, m[] = {10, 10, 10}, dt = 0.01;
+    double rmax = 16 * r[2] * r[2];
+    unsigned int n = 1000;
 
     vector<DrawableParticle> particles;
     particles.reserve(n);
@@ -36,8 +36,8 @@ int main() {
         double vy = (double) rand_uns(0, 20) - 10;
         Vector2D loc(x, y);
         Vector2D v(vx, vy);
-        particles.push_back(DrawableParticle(m[i % 2], r[i % 2], loc, v));
-        particles[i].fill(0, 255 * (i % 2), 255 * ((i + 1) % 2));
+        particles.push_back(DrawableParticle(m[i % 3], r[i % 3], loc, v));
+        particles[i].fill(255 * (i % 3 / 2), 255 * (i % 3 % 2), 255 * ((i + 2) % 3 / 2));
         collisions[i] = n;
     }
 
@@ -47,6 +47,10 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            window.close();
         }
 
         window.clear();
@@ -60,15 +64,15 @@ int main() {
                         particles[i].collision(particles[*it]);
                     }
             } else {
-            for (unsigned int j = i + 1; j < n; j++)
-                if (particles[i].sqrho(particles[j]) < rmax) {
-                    area[i].insert(j);
-                    if (particles[i].sqrho(particles[j]) < (particles[i].getR() + particles[j].getR()) *
-                                                           (particles[i].getR() + particles[j].getR())) {
-                        collisions[j] = i;
-                        particles[i].collision(particles[j]);
+                for (unsigned int j = i + 1; j < n; j++)
+                    if (particles[i].sqrho(particles[j]) < rmax) {
+                        area[i].insert(j);
+                        if (particles[i].sqrho(particles[j]) < (particles[i].getR() + particles[j].getR()) *
+                                                               (particles[i].getR() + particles[j].getR())) {
+                            collisions[j] = i;
+                            particles[i].collision(particles[j]);
+                        }
                     }
-                }
             }
             particles[i].update(dt, window);
         }
@@ -79,6 +83,5 @@ int main() {
             area[i].clear();
         }
     }
-
     return 0;
 }
