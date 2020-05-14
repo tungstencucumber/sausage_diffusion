@@ -47,33 +47,39 @@ void Gas::updateT() {
   temperature = energy / (nu * 8.31);
 }
 
-void Gas::live(double dt, sf::RenderWindow &w) {
-  vector<unsigned int> collisions;
-  collisions.resize(molecules.size());
-  for (auto it = collisions.begin(); it != collisions.end(); it++)
-    *it = molecules.size();
-  vector<set<unsigned int>> area;
-  area.resize(molecules.size());
+void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
+  vector<DrawableParticle*> all_mols;
+  for(unsigned int i = 0; i < f.molecules.size(); ++i)
+    all_mols.push_back(&f.molecules[i]);
+  for(unsigned int i = 0; i < g.molecules.size(); ++i)
+    all_mols.push_back(&g.molecules[i]);
 
-  for (unsigned int i = 0; i < molecules.size(); i++) {
-    if (collisions[i] < molecules.size()) {
+  vector<unsigned int> collisions;
+  collisions.resize(all_mols.size());
+  for (auto it = collisions.begin(); it != collisions.end(); it++)
+    *it = all_mols.size();
+  vector<set<unsigned int>> area;
+  area.resize(all_mols.size());
+
+  for (unsigned int i = 0; i < all_mols.size(); i++) {
+    if (collisions[i] < all_mols.size()) {
       for (auto it = area[collisions[i]].begin();
            it != area[collisions[i]].end(); it++)
-        if (*it != i && molecules[i].sqrho(molecules[*it]) <
-                        (molecules[i].getR() + molecules[*it].getR()) * (molecules[i].getR() + molecules[*it].getR())) {
-          molecules[i].collision(molecules[*it]);
+        if (*it != i && all_mols[i]->sqrho(*all_mols[*it]) <
+                        (all_mols[i]->getR() + all_mols[*it]->getR()) * (all_mols[i]->getR() + all_mols[*it]->getR())) {
+          all_mols[i]->collision(*all_mols[*it]);
         }
     } else {
-      for (unsigned int j = i + 1; j < molecules.size(); j++)
-        if (molecules[i].sqrho(molecules[j]) < R) {
+      for (unsigned int j = i + 1; j < all_mols.size(); j++)
+        if (all_mols[i]->sqrho(*all_mols[j]) < f.R || all_mols[i]->sqrho(*all_mols[j]) < g.R ) {
           area[i].insert(j);
-          if (molecules[i].sqrho(molecules[j]) <
-              (molecules[i].getR() + molecules[j].getR()) * (molecules[i].getR() + molecules[j].getR())) {
+          if (all_mols[i]->sqrho(*all_mols[j]) <
+              (all_mols[i]->getR() + all_mols[j]->getR()) * (all_mols[i]->getR() + all_mols[j]->getR())) {
             collisions[j] = i;
-            molecules[i].collision(molecules[j]);
+            all_mols[i]->collision(*all_mols[j]);
           }
         }
     }
-    molecules[i].update(dt, w);
+    all_mols[i]->update(dt, w);
   }
 }

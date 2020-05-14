@@ -30,7 +30,9 @@ public:
 
   void updateU();
   void updateT();
-  void live(double dt, sf::RenderWindow &w);
+  void friend live(Gas &f, Gas &g, double dt, sf::RenderWindow &w);
 };
+
+void live(Gas &f, Gas &g, double dt, sf::RenderWindow &w);
 
 #endif
