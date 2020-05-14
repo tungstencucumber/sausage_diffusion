@@ -9,7 +9,7 @@ Gas::Gas(vector<DrawableParticle> m) {
     if (it->getR() > R)
       R = it->getR();
   R = 4 * R * R;
-  nu = molecules.size() / 6.02; // NEED TO DECLARE N_A HERE
+  nu = molecules.size() / 6.02;
   updateU();
   updateT();
   volume = 0;

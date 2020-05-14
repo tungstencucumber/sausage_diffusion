@@ -2,7 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <set>
-#include <SFML/graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "Gas.h"
 #include <random>
 #include <chrono>
@@ -18,11 +18,14 @@ int rand_uns(int min, int max) {
 using namespace std;
 
 int main() {
-    double r[] = {3, 5, 7}, m[] = {10, 20, 30}, dt = 0.01;
-    unsigned int n = 1000;
+    double r[] = {3, 5}, m[] = {10, 20}, dt = 0.01;
+    unsigned int n = 500;
 
-    vector<DrawableParticle> particles;
-    particles.reserve(n);
+    vector<DrawableParticle> particles1;
+    particles1.reserve(n);
+
+    vector<DrawableParticle> particles2;
+    particles2.reserve(n);
 
     for (unsigned int i = 0; i < n; i++) {
         double x = (double) rand_uns(10, 790);
@@ -31,10 +34,22 @@ int main() {
         double vy = (double) rand_uns(0, 20) - 10;
         Vector2D loc(x, y);
         Vector2D v(vx, vy);
-        particles.push_back(DrawableParticle(m[i % 3], r[i % 3], loc, v));
-        particles[i].fill(255 * (i % 3 / 2), 255 * (i % 3 % 2), 255 * ((i + 2) % 3 / 2));
+        particles1.push_back(DrawableParticle(m[0], r[0], loc, v));
+        particles1[i].fill(255, 0, 0);
     }
-    Gas g(particles);
+    Gas f(particles1);
+
+    for (unsigned int i = 0; i < n; i++) {
+        double x = (double) rand_uns(10, 790);
+        double y = (double) rand_uns(10, 790);
+        double vx = (double) rand_uns(0, 20) - 10;
+        double vy = (double) rand_uns(0, 20) - 10;
+        Vector2D loc(x, y);
+        Vector2D v(vx, vy);
+        particles2.push_back(DrawableParticle(m[1], r[1], loc, v));
+        particles2[i].fill(0, 0, 255);
+    }
+    Gas g(particles2);
 
     sf::RenderWindow window(sf::VideoMode(1600, 1000), "Standard");
     while (window.isOpen()) {
@@ -45,6 +60,7 @@ int main() {
         }
 
         window.clear();
+        f.live(dt, window);
         g.live(dt, window);
         window.display();
     }
