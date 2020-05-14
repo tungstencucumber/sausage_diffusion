@@ -3,7 +3,7 @@
 #include <vector>
 #include <set>
 #include <SFML/graphics.hpp>
-#include "DrawableParticle.h"
+#include "Gas.h"
 #include <random>
 #include <chrono>
 
@@ -18,16 +18,11 @@ int rand_uns(int min, int max) {
 using namespace std;
 
 int main() {
-    double r[] = {5, 5, 5}, m[] = {10, 10, 10}, dt = 0.01;
-    double rmax = 16 * r[2] * r[2];
+    double r[] = {3, 5, 7}, m[] = {10, 20, 30}, dt = 0.01;
     unsigned int n = 1000;
 
     vector<DrawableParticle> particles;
     particles.reserve(n);
-    vector<unsigned int> collisions;
-    collisions.resize(n);
-    vector<set<unsigned int>> area;
-    area.resize(n);
 
     for (unsigned int i = 0; i < n; i++) {
         double x = (double) rand_uns(10, 790);
@@ -38,8 +33,8 @@ int main() {
         Vector2D v(vx, vy);
         particles.push_back(DrawableParticle(m[i % 3], r[i % 3], loc, v));
         particles[i].fill(255 * (i % 3 / 2), 255 * (i % 3 % 2), 255 * ((i + 2) % 3 / 2));
-        collisions[i] = n;
     }
+    Gas g(particles);
 
     sf::RenderWindow window(sf::VideoMode(1600, 1000), "Standard");
     while (window.isOpen()) {
@@ -49,39 +44,9 @@ int main() {
                 window.close();
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            window.close();
-        }
-
         window.clear();
-        for (unsigned int i = 0; i < n - 1; i++) {
-            if (collisions[i] < n) {
-                for (auto it = area[collisions[i]].begin();
-                     it != area[collisions[i]].end(); it++)
-                    if (*it != i && particles[i].sqrho(particles[*it]) < (particles[i].getR() + particles[*it].getR()) *
-                                                                         (particles[i].getR() +
-                                                                          particles[*it].getR())) {
-                        particles[i].collision(particles[*it]);
-                    }
-            } else {
-                for (unsigned int j = i + 1; j < n; j++)
-                    if (particles[i].sqrho(particles[j]) < rmax) {
-                        area[i].insert(j);
-                        if (particles[i].sqrho(particles[j]) < (particles[i].getR() + particles[j].getR()) *
-                                                               (particles[i].getR() + particles[j].getR())) {
-                            collisions[j] = i;
-                            particles[i].collision(particles[j]);
-                        }
-                    }
-            }
-            particles[i].update(dt, window);
-        }
-        particles[n - 1].update(dt, window);
+        g.live(dt, window);
         window.display();
-        for (unsigned int i = 0; i < n; i++) {
-            collisions[i] = n;
-            area[i].clear();
-        }
     }
     return 0;
 }

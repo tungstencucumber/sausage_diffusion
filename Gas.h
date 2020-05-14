@@ -2,6 +2,7 @@
 #define GAS_H
 
 #include <vector>
+#include <set>
 #include "DrawableParticle.h"
 
 using namespace std;
@@ -15,6 +16,7 @@ protected:
   double temperature;
   double nu;
   double energy;
+  double R;
 public:
   Gas();
   Gas(vector<DrawableParticle> m);
@@ -28,7 +30,7 @@ public:
 
   void updateU();
   void updateT();
-  void live(double dt);
+  void live(double dt, sf::RenderWindow &w);
 };
 
 #endif
