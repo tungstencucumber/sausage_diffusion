@@ -18,11 +18,11 @@ protected:
   double energy;
   double R;
   unsigned int C = 10; // number of volume sections made by division of general volume
-  double N[C]; // number of molecules in this volume section
-  double n[C]; // current concentration
-  double n0[C]; // concentration one step ago
-  double dN[C-1]; // number of molecules crossed transverse sections
-  double j[C-1]; // particle stream density
+  double* N; // number of molecules in this volume section
+  double* n; // current concentration
+  double* n0; // concentration one step ago
+  double* dN; // number of molecules crossed transverse sections
+  double* j; // particle stream density
 public:
   Gas();
   Gas(vector<DrawableParticle> m);
