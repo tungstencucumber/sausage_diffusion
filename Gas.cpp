@@ -61,6 +61,20 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
   vector<set<unsigned int>> area;
   area.resize(all_mols.size());
 
+  for(int i = 0; i < f.C; i++) {
+    f.n0[i] = f.n[i];
+    f.n[i] = 0;
+    f.N[i] = 0;
+    f.dN[i] = 0;
+    f.j[i] = 0;
+
+    g.n0[i] = g.n[i];
+    g.n[i] = 0;
+    g.N[i] = 0;
+    g.dN[i] = 0;
+    g.j[i] = 0;
+  }
+
   for (unsigned int i = 0; i < all_mols.size(); i++) {
     if (collisions[i] < all_mols.size()) {
       for (auto it = area[collisions[i]].begin();
@@ -80,6 +94,28 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
           }
         }
     }
-    all_mols[i]->update(dt, w);
+    // checking if the particle is going to cross neighbour section
+    if ( (int)(((all_mols[i].getLoc() + all_mols[i].getV()*dt).getX()*f.C)/1600) != (int)(((all_mols[i].getLoc()).getX()*f.C)/1600) ) {
+      if(i < f.molecules.size()) { //if particles belongs to f gas...
+        f.dN[(int)(((all_mols[i].getLoc()).getX()*f.C)/1600)]++; // increment the value of molecules crossed this particular section
+      } else { //else it belongs to f gas
+        g.dN[(int)(((all_mols[i].getLoc()).getX()*f.C)/1600)]++; // and we do the same stuff
+      }
+    }
+    all_mols[i]->update(dt, w); //moving particle
+    // reporting that the particle is in this volume section now
+    if(i < f.molecules.size()) {
+      f.N[(int)((loc + v*dt).getX()/(1600/C))]++;
+    } else {
+      g.N[(int)((loc + v*dt).getX()/(1600/C))]++;
+    }
+  }
+  //recalculating concentrations and densities
+  for(int i = 0; i < f.C; i++) {
+    f.n[i] = f.N[i]/(1600/C);
+    f.j[i] = f.dN[i]/dt; // THE FORMULA IS INCORRECT THE AREA IS NEEDED TO BE INSERTED
+
+    g.n[i] = g.N[i]/(1600/C);
+    g.j[i] = g.dN[i]/dt; // THE FORMULA IS INCORRECT THE AREA IS NEEDED TO BE INSERTED x2
   }
 }
