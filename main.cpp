@@ -2,7 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <set>
-#include <SFML/Graphics.hpp>
+#include <SFML/graphics.hpp>
 #include "Gas.h"
 #include <random>
 #include <chrono>
@@ -18,8 +18,8 @@ int rand_uns(int min, int max) {
 using namespace std;
 
 int main() {
-    double r[] = {6, 10}, m[] = {10, 20}, dt = 0.01;
-    int w = 1600, vmax = 400;
+    double r[] = {5, 7}, m[] = {10, 20}, dt = 0.01;
+    int w = 1600, vmax = 800;
     unsigned int n = 500;
 
     vector<DrawableParticle> particles1;
@@ -50,7 +50,7 @@ int main() {
     Gas f(particles1);
     Gas g(particles2);
 
-    sf::RenderWindow window(sf::VideoMode(1600, 900), "Standard");
+    sf::RenderWindow window(sf::VideoMode(1600, 1000), "Standard");
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {

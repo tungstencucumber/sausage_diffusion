@@ -22,7 +22,13 @@ Gas::Gas(vector<DrawableParticle> m) {
   volume = 0;
 }
 
-Gas::~Gas() {}
+Gas::~Gas() {
+    delete[] N;
+    delete[] n;
+    delete[] n0;
+    delete[] dN;
+    delete[] j;
+}
 
 double Gas::getP() const {
   return pressure;
@@ -101,21 +107,31 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
           }
         }
     }
+
     // checking if the particle is going to cross neighbour section
-    if ( (int)(((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()*f.C)/1600) != (int)(((all_mols[i]->getLoc()).getX()*f.C)/1600) ) {
-      if(i < f.molecules.size()) { //if particles belongs to f gas...
-        f.dN[(int)(((all_mols[i]->getLoc()).getX()*f.C)/1600)]++; // increment the value of molecules crossed this particular section
-      } else { //else it belongs to f gas
-        g.dN[(int)(((all_mols[i]->getLoc()).getX()*f.C)/1600)]++; // and we do the same stuff
+    double current = (all_mols[i]->getLoc().getX())*f.C/1600;
+    double next = (all_mols[i]->getLoc().getX() + all_mols[i]->getV().getX())*f.C/1600;
+    int d = 1;
+    if (all_mols[i]->getV().getX() < 0)
+        d = -1;
+    for (unsigned int i = 0; i < f.C; i++) {
+      if (i < next && next < i + 1 ) {
+        if (i < f.molecules.size()) { // reporting that the particle is in this volume section now
+            f.N[i] ++;
+        } else {
+            g.N[i] ++;
+        }
+        if ((current < i || i + 1 < current)) {
+          if (i < f.molecules.size()) { //if particles belongs to f gas...
+            f.dN[i] += d; // increment the value of molecules crossed this particular section
+          } else { //else it belongs to g gas
+            g.dN[i] += d; // and we do the same stuff
+          }
+        }
       }
     }
+
     all_mols[i]->update(dt, w); //moving particle
-    // reporting that the particle is in this volume section now
-    if(i < f.molecules.size()) {
-      f.N[(int)((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()/(1600/f.C))]++;
-    } else {
-      g.N[(int)((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()/(1600/g.C))]++;
-    }
   }
   //recalculating concentrations and densities
   for(unsigned int i = 0; i < f.C; i++) {

@@ -2,7 +2,7 @@
 #define PRIMITIVES_CIRCLE_H
 
 #include "Vector2D.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/graphics.hpp>
 
 class Circle {
 protected:
