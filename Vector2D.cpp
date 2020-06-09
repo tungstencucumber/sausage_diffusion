@@ -14,6 +14,10 @@ double Vector2D::getLen() const {
     return sqrt(x * x + y * y);
 }
 
+double Vector2D::getLenSqr() const {
+    return x * x + y * y;
+}
+
 void Vector2D::setX(double _x) {
     x = _x;
 }

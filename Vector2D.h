@@ -16,6 +16,8 @@ public:
 
     double getLen() const;
 
+    double getLenSqr() const;
+
     void setX(double _x);
 
     void setY(double _y);

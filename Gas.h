@@ -17,12 +17,16 @@ protected:
   double nu;
   double energy;
   double R;
-  unsigned int C = 10; // number of volume sections made by division of general volume
+  double v; // average absolute velocity
+  unsigned int C = 50; // number of volume sections made by division of general volume
   double* N; // number of molecules in this volume section
   double* n; // current concentration
   double* n0; // concentration one step ago
   double* dN; // number of molecules crossed transverse sections
   double* j; // particle stream density
+  double* l; //mean free path
+  double* Dt; //diffusion factor theoretical
+  double* Dc; //diffusion factor calculated
 public:
   Gas();
   Gas(vector<DrawableParticle> m);
