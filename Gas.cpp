@@ -10,16 +10,11 @@ Gas::Gas(vector<DrawableParticle> m) {
   for (unsigned int i = 0; i < C; i++)
     n[i] = 0;
   n0 = new double[C];
-<<<<<<< HEAD
   dN = new double[C];
   j = new double[C];
   l = new double[C];
   Dt = new double[C];
   Dc = new double[C];
-=======
-  dN = new double[C-1];
-  j = new double[C-1];
->>>>>>> Working on calculations.
   for (auto it = molecules.begin(); it != molecules.end(); it++)
     if (it->getR() > R)
       R = it->getR();
@@ -78,9 +73,6 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
   for(unsigned int i = 0; i < g.molecules.size(); ++i)
     all_mols.push_back(&g.molecules[i]);
 
-  for(unsigned int i = 0; i < all_mols.size(); ++i)
-      cout << i << ": {" << all_mols[i]->getLoc().getX() << ", " << all_mols[i]->getLoc().getY() << "; " << all_mols[i]->getV().getX() << ", " << all_mols[i]->getV().getY() << "}" << endl;
-
   vector<unsigned int> collisions;
   collisions.resize(all_mols.size());
   for (auto it = collisions.begin(); it != collisions.end(); it++)
@@ -125,7 +117,6 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
     }
 
     // checking if the particle is going to cross neighbour section
-<<<<<<< HEAD
     double current = (all_mols[i]->getLoc().getX())*f.C/1600;
     double next = (all_mols[i]->getLoc().getX() + all_mols[i]->getV().getX()*dt)*f.C/1600;
     int d = 1;
@@ -147,45 +138,22 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
             g.dN[j] += d; // and we do the same stuff
           }
         }
-=======
-     if ( (int)(((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()*f.C)/1600) != (int)(((all_mols[i]->getLoc()).getX()*f.C)/1600) ) {
-      if(i < f.molecules.size()) { //if particles belongs to f gas...
-        f.dN[(int)(((all_mols[i]->getLoc()).getX()*f.C)/1600)]++; // increment the value of molecules crossed this particular section
-      } else { //else it belongs to f gas
-        g.dN[(int)(((all_mols[i]->getLoc()).getX()*f.C)/1600)]++; // and we do the same stuff
->>>>>>> Working on calculations.
       }
     }
 
     all_mols[i]->update(dt, w); //moving particle
-<<<<<<< HEAD
   }
   f.v = f.v/f.molecules.size()/1000;
   g.v = g.v/g.molecules.size()/1000;
   //recalculating concentrations and densities, assuming S = 1
   for(unsigned int i = 0; i < f.C; i++) {
     f.n[i] = f.N[i]/(1.6/f.C);
-=======
-
-    //reporting that the particle is in this volume section now
-    // if(i < f.molecules.size()) {
-    //   f.N[(int)((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()*(f.C - 1)/1600)]++;
-    // } else {
-    //   g.N[(int)((all_mols[i]->getLoc() + all_mols[i]->getV()*dt).getX()*(g.C - 1)/1600)]++;
-    // }
-
-  }
-  //recalculating concentrations and densities
-  /* for(unsigned int i = 0; i < f.C; i++) {
-    f.n[i] = f.N[i]/(1600/f.C);
->>>>>>> Working on calculations.
     f.j[i] = f.dN[i]/dt; // THE FORMULA IS INCORRECT THE AREA IS NEEDED TO BE INSERTED
     f.l[i] = 1/f.n[i]/(3.14*f.R);
     f.Dt[i] = f.v*f.l[i]/3;
 
     g.n[i] = g.N[i]/(1.6/g.C);
     g.j[i] = g.dN[i]/dt; // THE FORMULA IS INCORRECT THE AREA IS NEEDED TO BE INSERTED x2
-<<<<<<< HEAD
     g.l[i] = 1/g.n[i]/g.R;
     g.Dt[i] = g.v*g.l[i]/3;
     if (i > 0 && (f.N[i-1] != 0 || f.N[i] != 0)) {
@@ -193,7 +161,4 @@ void live(Gas &f, Gas&g, double dt, sf::RenderWindow &w) {
       cout << f.Dt[i-1] << ' ' << f.Dc[i-1] << endl;
     }
   }
-=======
-  } */
->>>>>>> Working on calculations.
 }
